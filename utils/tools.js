@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import axios from 'axios';
+
 export const clsx = (conditionals, others) => {
   return [
     others,
@@ -7,58 +10,52 @@ export const clsx = (conditionals, others) => {
   ].join(" ");
 };
 
-export const termsMapping = (key, data) => {
-  if (!key) return;
-  let result;
-  data.map((item) => {
-    let _letter = item.name_eng.toLowerCase().replace(/ /g, "-");
-    if (key === _letter) {
-      return (result = item);
-    }
-    return false;
-  });
-  return result || key;
-};
+// export const fetcher = async (url, { setState }) => {
+//   const req = await fetch(url)
+//     .then(async (res) => {
+//       return {
+//         isOk: res.ok,
+//         statusCode: res.status,
+//         data: await res.json(),
+//       };
+//     })
+//     .then(async (res) => {
+//       setState(res.data);
+//     })
+//     .catch((error) => {
+//       console.warn(error);
+//       return {
+//         isOk: false,
+//         data: error,
+//       };
+//     });
+// };
 
-export const codeMapping = ({ key, data, field = "name" }) => {
-  if (!key) return;
-  if (!data) return;
-  let result;
-  data.map((item) => {
-    if (key === item.code || key === item.slackId || key === item.id) {
-      switch (field) {
-        case "name":
-          return (result = item.name);
-        case "all":
-          return (result = item);
-        case "location":
-          return (result = item.location);
-        default:
-          return (result = item.name);
+export const useRequest = (initUrl) => {
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({});
+
+  useEffect(() => {
+    let ignore = false;
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        setError({});
+        const response = await axios(initUrl);
+        if (!ignore) {
+          setData(response.data)
+          // console.log(response.data)
+        };
+      } catch (err) {
+        setError(err);
+        setData({});
       }
-    }
-    return false;
-  });
-  return result || key;
-};
+      setLoading(false);
+    };
+    fetchProduct();
+    return (() => { ignore = true; });
+  }, [initUrl]);
 
-export const fetcher = async (url, { setState }) => {
-  const req = await fetch(url)
-    .then(async (res) => {
-      return {
-        isOk: res.ok,
-        statusCode: res.status,
-        data: await res.json(),
-      };
-    })
-    .then(async (res) => {
-      setState(res.data);
-    })
-    .catch((error) => {
-      console.warn(error);
-      return {
-        isOk: false,
-        data: error,
-      };
-    });
+  return { data, loading, error };
 };

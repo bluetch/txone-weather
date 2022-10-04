@@ -4,7 +4,7 @@ import { memo } from "react";
 const IconNameOptions = Object.freeze([
   "clear",
   "cloud",
-  "icon_ripple_loading",
+  "loading",
   "na",
   "rain",
   "refresh",

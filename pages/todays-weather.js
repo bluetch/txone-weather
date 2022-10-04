@@ -1,15 +1,14 @@
 import Head from "next/head";
 import { NavAside, Icon } from "components";
 import { useEffect, useState, useRef, useMemo } from "react";
-import { fetcher } from "utils";
+import { fetcher, useRequest } from "utils";
 import getConfig from "next/config";
 import styles from "./main.module.scss";
 
 export default () => {
-  const [weatherData, setWeatherData] = useState(null);
-  const [statusCode, setStatusCode] = useState();
-  const [city, setCity] = useState("london");
-  const [country, setCountry] = useState("GB");
+  const [city, setCity] = useState("taipei");
+  const [country, setCountry] = useState("tw");
+  const [query, setQuery] = useState("");
 
   const inputCityRef = useRef();
   const inputCountryRef = useRef();
@@ -23,6 +22,7 @@ export default () => {
 
   // To check description for icon display
   const categorize = (str) => {
+    if (str == undefined) return "na";
     if (str.includes("clear")) {
       return "clear";
     } else if (str.includes("rain")) {
@@ -34,21 +34,14 @@ export default () => {
     }
   }
 
-  useEffect(() => {
-    let query = "";
-    if (city || country) {
-      query = `${city},${country}`;
-    }
-    fetcher(`${publicRuntimeConfig.api_path}?units=metric&q=${query}&APPID=${publicRuntimeConfig.api_key}`, { setState: setWeatherData });
-  }, [city, country]);
+  const {data, loading, error} = useRequest(`${publicRuntimeConfig.api_path}?units=metric&q=${city},${country}&APPID=${publicRuntimeConfig.api_key}`);
 
-  useEffect(() => {
-    if (weatherData?.cod) {
-      setStatusCode(weatherData.cod);
-    }
-  }, [weatherData])
+  // useEffect(()=>{
+  //   setQuery(`${city},${country}`);
+  // },[city, country])
 
-  // console.log(weatherData);
+  // console.log(data, loading, error);
+  console.log(data, error);
   // console.log(statusCode)
   return (
     <div className="flex">
@@ -69,28 +62,32 @@ export default () => {
           </label>
           <button onClick={search}>Search</button>
         </div>
-        {(statusCode === 200 && weatherData?.weather) ? (
+        {/* loading */}
+        {loading && (<Icon name="loading"/>)}
+        {/* render data */}
+        {data.weather && (
           <div className={styles.weatherInfo}>
             <div className={styles.mainInfo}>
               <div className={styles.weatherImg}>
-                <Icon name={categorize(weatherData.weather[0].description)} />
+                <Icon name={categorize(data?.weather[0]?.description)} />
               </div>
               <div className={styles.description}>
-                {weatherData.weather && (
+                {data?.weather.length > 0 && (
                   <>
-                    <h3 className={styles.weatherType}>{weatherData.weather[0].main || ""}</h3>
-                    <p>{weatherData.weather[0].description}</p>
+                    <h3 className={styles.weatherType}>{data?.weather[0]?.main || ""}</h3>
+                    <p>{data?.weather[0]?.description}</p>
                   </>
                 )}
               </div>
             </div>
-            <p>Temperature: {weatherData.main.temp_min}°C ~ {weatherData.main.temp_max}°C</p>
-            <p>Humidity: {weatherData.main.humidity}%</p>
+            <p>Temperature: {data?.main.temp_min}°C ~ {data?.main.temp_max}°C</p>
+            <p>Humidity: {data?.main.humidity}%</p>
           </div>
-        ) : (<div>Loading</div>)}
-        {weatherData?.message && (
+        )}
+        {/* error message */}
+        {error.response && (
           <div>
-            {weatherData.message}
+            {error.response.data.message}
           </div>
         )}
       </main>
