@@ -1,0 +1,26 @@
+.filter{
+  padding: 12px 0;
+  .label{
+    margin-right: 12px;
+  }
+}
+
+.weatherImg{
+  background-color: #EEF2FA;
+}
+
+.weatherInfo{
+  padding: 12px 0;
+  .mainInfo{
+    display: flex;
+    margin-left: 12px;
+    margin-bottom: 12px;
+    .description{
+      align-self: center;
+      margin-left: 12px;
+    }
+  }
+  .desc{
+    display: in;
+  }
+}
