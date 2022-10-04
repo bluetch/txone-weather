@@ -8,7 +8,7 @@ export const useRequest = (initUrl) => {
 
   useEffect(() => {
     let ignore = false;
-    const fetchProduct = async () => {
+    const fetchData = async () => {
       setLoading(true);
       setData({});
       try {
@@ -24,7 +24,7 @@ export const useRequest = (initUrl) => {
       }
       setLoading(false);
     };
-    fetchProduct();
+    fetchData();
     return (() => { ignore = true; });
   }, [initUrl]);
 
