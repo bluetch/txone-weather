@@ -48,8 +48,8 @@ export default () => {
     }
   }, [weatherData])
 
-  console.log(weatherData);
-  console.log(statusCode)
+  // console.log(weatherData);
+  // console.log(statusCode)
   return (
     <div className="flex">
       <Head>
