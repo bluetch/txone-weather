@@ -16,10 +16,9 @@ export const useRequest = (initUrl) => {
         const response = await axios(initUrl);
         if (!ignore) {
           setData(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         };
       } catch (err) {
-        console.log("here")
         setError(err);
         setData({});
       }
