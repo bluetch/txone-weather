@@ -23,4 +23,13 @@
   .desc{
     display: in;
   }
+  p{
+    margin-bottom: 8px;
+  }
+}
+
+.error{
+  border: 1px solid red;
+  padding: 4px;
+  background-color: #FFF1F1;
 }

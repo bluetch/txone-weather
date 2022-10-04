@@ -1,23 +1,29 @@
 import Head from "next/head";
 import { NavAside, Icon } from "components";
-import { useEffect, useState, useRef, useMemo } from "react";
-import { fetcher, useRequest } from "utils";
+import { useState, useRef } from "react";
+import { useRequest } from "hooks";
 import getConfig from "next/config";
-import styles from "./main.module.scss";
+import styles from "styles/main.module.scss";
 
 export default () => {
   const [city, setCity] = useState("taipei");
   const [country, setCountry] = useState("tw");
-  const [query, setQuery] = useState("");
 
   const inputCityRef = useRef();
   const inputCountryRef = useRef();
 
+  // get API info from .env
   const { publicRuntimeConfig } = getConfig();
 
-  const search = () => {
+  const handleSearch = () => {
     setCity(inputCityRef.current.value);
     setCountry(inputCountryRef.current.value);
+  }
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   }
 
   // To check description for icon display
@@ -34,15 +40,8 @@ export default () => {
     }
   }
 
-  const {data, loading, error} = useRequest(`${publicRuntimeConfig.api_path}?units=metric&q=${city},${country}&APPID=${publicRuntimeConfig.api_key}`);
+  const { data, loading, error } = useRequest(`${publicRuntimeConfig.api_path}?units=metric&q=${city},${country}&APPID=${publicRuntimeConfig.api_key}`);
 
-  // useEffect(()=>{
-  //   setQuery(`${city},${country}`);
-  // },[city, country])
-
-  // console.log(data, loading, error);
-  console.log(data, error);
-  // console.log(statusCode)
   return (
     <div className="flex">
       <Head>
@@ -54,16 +53,16 @@ export default () => {
         <div className={styles.filter}>
           <label htmlFor="city" className={styles.label}>
             <span>City: </span>
-            <input type="text" id="city" defaultValue={city} ref={inputCityRef} />
+            <input type="text" id="city" defaultValue={city} ref={inputCityRef} onKeyPress={handleEnter} />
           </label>
           <label htmlFor="country" className={styles.label}>
             <span>Country: </span>
-            <input type="text" id="country" defaultValue={country} ref={inputCountryRef} />
+            <input type="text" id="country" defaultValue={country} ref={inputCountryRef} onKeyPress={handleEnter} />
           </label>
-          <button onClick={search}>Search</button>
+          <button onClick={handleSearch}>Search</button>
         </div>
         {/* loading */}
-        {loading && (<Icon name="loading"/>)}
+        {loading && (<Icon name="loading" />)}
         {/* render data */}
         {data.weather && (
           <div className={styles.weatherInfo}>
@@ -86,7 +85,7 @@ export default () => {
         )}
         {/* error message */}
         {error.response && (
-          <div>
+          <div className={styles.error}>
             {error.response.data.message}
           </div>
         )}

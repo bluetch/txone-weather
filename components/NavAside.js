@@ -1,4 +1,3 @@
-import { clsx } from "utils";
 import { useRouter } from 'next/router';
 import Link from "next/link";
 import styles from "./NavAside.module.scss";
