@@ -32,3 +32,5 @@ export const NavAside = () => {
     </nav>
   );
 };
+
+NavAside.displayName = "NavAside";
