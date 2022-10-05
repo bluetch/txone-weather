@@ -1,6 +1,6 @@
 # txone-weather prototyping exercise
 
-- [demo link](https://txone-weather.vercel.app/)
+<a href="https://txone-weather.vercel.app/" target="_blank">Demo Link</a>
 
 ### Tasks
 
