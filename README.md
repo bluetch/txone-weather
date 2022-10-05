@@ -56,7 +56,7 @@ yarn install
 
 3. Setup environment for API_KEY and AP_PATH
 
-API KEY have to generate by [OpenWeather](https://home.openweathermap.org/), once generated it should wait a few minute to hour to available.
+API KEY have to generate by [OpenWeather](https://home.openweathermap.org/), once generated it should wait a few minutes to hour to available.
 
 ```sh
 cp ./.env.sample ./.env
