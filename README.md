@@ -45,11 +45,23 @@ brew install yarn node eslint prettier git
 git clone git@github.com:bluetch/txone-weather.git
 ```
 
+
 2. Install NPM packages
 
 ```sh
+cd txone-weather
 yarn install
 ```
+
+
+3. Setup environment for API_KEY and AP_PATH
+
+API KEY have to generate by [OpenWeather](https://home.openweathermap.org/), once generated it should wait a few minute to hour to available.
+
+```sh
+cp ./.env.sample ./.env
+```
+
 
 <!-- USAGE EXAMPLES -->
 
