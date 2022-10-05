@@ -1,6 +1,6 @@
 # txone-weather prototyping exercise
 
-[demo link](https://txone-weather.vercel.app/)
+- [demo link](https://txone-weather.vercel.app/)
 
 ### Tasks
 
