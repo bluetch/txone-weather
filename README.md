@@ -1,5 +1,7 @@
 # txone-weather prototyping exercise
 
+[demo link](https://txone-weather.vercel.app/)
+
 ### Tasks
 
 1. menu style (done with SCSS)
